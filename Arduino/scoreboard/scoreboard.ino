@@ -10,16 +10,17 @@ long shotClockInterval = 1000;
 
 //Constantes referentes as saidas digitais
 
-const int shotClockOnesStartingPin = 14;
-const int shotClockTensStartingPin = 6;
-const int ledPin = 4;
-const int shotClockDotPin = 13;
-const int buzzerPin = 5;
+const int shotClockOnesStartingPin = 10;
+const int shotClockTensStartingPin = 2;
+const int ledPin = 1;
+const int shotClockDotPin = 9;
+const int buzzerPin = 0;
 const int quarterStartingPin = 43;
 const int foulsHomeStartingPin = 50;
 const int foulsVisitorStartingPin = 57;
 const int timeoutsHomeStartingPin = 64;
 const int timeoutsVisitorStartingPin = 67;
+
 
 //Array para representação dos números no display de 7 segmentos
 bool numbers[10][7] = {
@@ -44,13 +45,15 @@ bool isShotClockRunning, isGameClockRunning, isShotClockUnderTen;
 int scoreHome, scoreVisitor, timeoutsHome, timeoutsVisitor, foulsHome, foulsVisitor, quarter;
 
 //Objetos referentes aos displays
-TM1637Display gameClockDisplay(3, 2);
+TM1637Display gameClockDisplay(20, 17);
 SevSeg scoreHomeDisplay, scoreVisitorDisplay;
+
 
 void setup() {
 
-  //Configura a comunicação serial 
+  //Configura a comunicação serial e bluetooth
   Serial.begin(9600);
+  Serial1.begin(9600);
 
   //Configura os displays de sete segmentos de 4 digitos
   byte numDigits = 4;
@@ -93,7 +96,7 @@ void setup() {
 
   //Configuração das saídas digitais
 
-  for (int i = 4; i <= 69; i++) {
+  for (int i = 2; i <= 69; i++) {
     pinMode(i, OUTPUT);
   }
 
@@ -127,7 +130,8 @@ void setup() {
 void loop() {
 
   //Verifica o recebimento de algum sinal 
-  serialMessageCheck();
+  //serialMessageCheck();
+  bluetoothSerialMessageCheck();
 
   //Prossegue o funcionamento do relógio de partida e posse levando em conta o tempo real decorrido
 
@@ -181,6 +185,43 @@ void serialMessageCheck() {
   } else {
     //Serial.println("Nada recebido");
   }
+  
+}
+
+void bluetoothSerialMessageCheck() {
+  if (Serial1.available()>0) {
+    Serial.println("Bluetooth recebido");
+    char bluetoothData = Serial1.read();
+    if (bluetoothData == 'a') {
+      addScore(true);
+    } else if (bluetoothData == 'b') {
+      addScore(false);
+    } else if (bluetoothData == 'c') {
+      clockStateChange();
+    } else if (bluetoothData == 'd') {
+      resumeShotClock();
+    } else if (bluetoothData == 'e') {
+      shotClockReset(true);
+    } else if (bluetoothData == 'f') {
+      shotClockReset(false);
+    } else if (bluetoothData == 'g') {
+      addFoul(true);
+    } else if (bluetoothData == 'h') {
+      addFoul(false);
+    } else if (bluetoothData == 'i') {
+      useTimeout(true);
+    } else if (bluetoothData == 'j') {
+      useTimeout(false);
+    } else if (bluetoothData == 'k') {
+      nextQuarter();
+    } else {
+      Serial.println("Command not recognized: " + bluetoothData);
+    }
+
+  } else {
+    //Serial.println("Nada recebido");
+  }
+  
 }
 
 //Métodos de funcionamento do placar
