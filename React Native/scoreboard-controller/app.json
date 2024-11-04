@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "scoreboard-controller",
-    "slug": "snack-19cdd464-92cf-47c9-b54f-8f679cbf224e",
+    "slug": "scoreboard-controller",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -11,9 +11,6 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
     "ios": {
       "supportsTablet": true
     },
@@ -21,10 +18,16 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.samuel.guilan.scoreboardcontroller"
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "723791c7-c347-4928-a125-0adaa867d356"
+      }
     }
   }
 }
