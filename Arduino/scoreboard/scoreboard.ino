@@ -214,6 +214,8 @@ void bluetoothSerialMessageCheck() {
       useTimeout(false);
     } else if (bluetoothData == 'k') {
       nextQuarter();
+      } else if (bluetoothData == 'l') {
+      resetMatch();
     } else {
       Serial.println("Command not recognized: " + bluetoothData);
     }
@@ -233,6 +235,7 @@ void nextQuarter() {
     setFouls(false, 0);
     setTimeouts(true, 3);
     setTimeouts(false, 3);
+    setShotClock(24);
     minutesClock = 10;
     secondsClock = 0;
     singleDigitRepresent(quarter, quarterStartingPin);
@@ -336,6 +339,22 @@ void setQuarter(int value) {
   } else {
     Serial.println("Invalid quarter value");
   }
+}
+
+void resetMatch(){
+    setQuarter(1);
+    setFouls(true, 0);
+    setFouls(false, 0);
+    setTimeouts(true, 3);
+    setTimeouts(false, 3);
+    setShotClock(24);
+    setScore(true, 0);
+    setScore(false, 0);
+    stopGame();
+    minutesClock = 10;
+    secondsClock = 0;
+    singleDigitRepresent(quarter, quarterStartingPin);
+    gameClockDisplay.showNumberDecEx(100 * (minutesClock) + secondsClock, 0b01110000);
 }
 
 //Métodos de funcionamento do relógio

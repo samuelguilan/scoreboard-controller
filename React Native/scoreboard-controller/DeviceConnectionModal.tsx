@@ -34,9 +34,9 @@ const DeviceModalListItem: FC<DeviceModalListItemProps> = props => {
   return (
     <TouchableOpacity
       onPress={connectAndCloseModal}
-      style={modalStyle.ctaButton}
+      style={modalStyle.itemButton}
       >
-      <Text style={modalStyle.ctaButtonText}>{item.item.name}</Text>
+      <Text style={modalStyle.itemButtonText}>{item.item.name}</Text>
     </TouchableOpacity>
   );
 };
@@ -72,6 +72,12 @@ const DeviceModal: FC<DeviceModalProps> = props => {
           data={devices}
           renderItem={renderDeviceModalListItem}
         />
+        <TouchableOpacity
+           onPress={closeModal}
+           style={modalStyle.returnButton}
+        >
+          <Text style={modalStyle.itemButtonText}>Voltar</Text>
+        </TouchableOpacity>
       </SafeAreaView>
     </Modal>
   );
@@ -105,7 +111,7 @@ const modalStyle = StyleSheet.create({
     marginHorizontal: 20,
     textAlign: 'center',
   },
-  ctaButton: {
+  itemButton: {
     backgroundColor: 'purple',
     justifyContent: 'center',
     alignItems: 'center',
@@ -114,7 +120,16 @@ const modalStyle = StyleSheet.create({
     marginBottom: 5,
     borderRadius: 8,
   },
-  ctaButtonText: {
+  returnButton: {
+    backgroundColor: 'red',
+    justifyContent: 'center',
+    alignItems: 'center',
+    height: 50,
+    marginHorizontal: 20,
+    marginBottom: 5,
+    borderRadius: 8,
+  },
+  itemButtonText: {
     fontSize: 18,
     fontWeight: 'bold',
     color: 'white',
